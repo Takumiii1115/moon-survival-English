@@ -1,103 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Moon Survival Scorecard</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 30px;
-      background: #f9f9f9;
-    }
-    h2 {
-      color: #333;
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .hint {
-      text-align: center;
-      font-size: 16px;
-      color: #d9534f;
-      margin-bottom: 20px;
-      font-weight: bold;
-    }
-    label {
-      font-size: 18px;
-      font-weight: bold;
-      margin-right: 10px;
-    }
-    input.text-input {
-      font-size: 18px;
-      padding: 5px 10px;
-      margin-bottom: 15px;
-      border: 1px solid #aaa;
-      border-radius: 5px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: white;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-      font-size: 15px;
-    }
-    th {
-      background: #f0f0f0;
-    }
-    tr:nth-child(even) {
-      background: #fafafa;
-    }
-    input.rank-input {
-      width: 60px;
-      font-size: 16px;
-      text-align: center;
-      padding: 4px;
-      border: 1px solid #bbb;
-      border-radius: 4px;
-    }
-    .expert {
-      color: red;
-      font-weight: bold;
-    }
-    button {
-      margin-top: 20px;
-      font-size: 18px;
-      padding: 10px 20px;
-      background-color: #4285f4;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-right: 10px;
-    }
-    button:hover {
-      background-color: #2a63c7;
-    }
-    .sum-cell {
-      background: #fff8b3;
-      font-weight: bold;
-    }
-    .note-cell {
-      text-align: right;
-      font-weight: bold;
-      padding-left: 10px;
-    }
-    .hidden-col {
-      display: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Moon Survival Scorecard</title>
+<style>
+body { font-family: Arial, sans-serif; margin:30px; background:#f9f9f9;}
+h2 { text-align:center; margin-bottom:10px;}
+.hint { text-align:center; color:#d9534f; font-weight:bold; margin-bottom:20px;}
+label { font-size:18px; font-weight:bold; margin-right:10px;}
+input.text-input { font-size:18px; padding:5px 10px; margin-bottom:15px;}
+table { width:100%; border-collapse:collapse; background:white;}
+th,td { border:1px solid #ccc; padding:8px; text-align:center;}
+th { background:#f0f0f0;}
+input.rank-input { width:60px; text-align:center;}
+.expert { color:red; font-weight:bold;}
+button { margin-top:20px; font-size:18px; padding:10px 20px; background:#4285f4; color:white; border:none; border-radius:6px; cursor:pointer;}
+button:hover { background:#2a63c7;}
+.sum-cell { background:#fff8b3; font-weight:bold;}
+.note-cell { text-align:right; font-weight:bold;}
+.hidden-col { display:none;}
+</style>
 </head>
 <body>
 
 <h2>Moon Survival Individual Scorecard</h2>
-
-<div id="hint" class="hint">
-👉 Please complete Steps 1–3 before clicking "Calculate Results"
-</div>
+<div id="hint" class="hint">👉 Please complete Steps 1–3 before clicking "Calculate Results"</div>
 
 <label>Group Number:</label>
 <input id="group" class="text-input"><br>
@@ -106,168 +33,155 @@
 <input id="name" class="text-input"><br>
 
 <table id="score-table">
-  <tr>
-    <th>Item</th>
-    <th>Step 1<br>Individual Decision<br>(Before Discussion)</th>
-    <th>Step 2<br>Group Decision</th>
-    <th>Step 3<br>Individual Decision<br>(After Discussion)</th>
-    <th class="hidden-col">Step 4<br>Expert Ranking</th>
-    <th class="hidden-col">Step 5<br>Individual Influence<br>|1-2|</th>
-    <th class="hidden-col">Step 6<br>Individual Performance 1<br>|1-4|</th>
-    <th class="hidden-col">Step 7<br>Team Performance<br>|2-4|</th>
-    <th class="hidden-col">Step 8<br>Individual Performance 2<br>|3-4|</th>
-  </tr>
+<tr>
+<th>Item</th>
+<th>Step 1<br>Individual Decision<br>(Before Discussion)</th>
+<th>Step 2<br>Group Decision</th>
+<th>Step 3<br>Individual Decision<br>(After Discussion)</th>
+<th class="hidden-col">Step 4<br>Expert Ranking</th>
+<th class="hidden-col">Step 5<br>Individual Influence</th>
+<th class="hidden-col">Step 6<br>Individual Performance 1</th>
+<th class="hidden-col">Step 7<br>Team Performance</th>
+<th class="hidden-col">Step 8<br>Individual Performance 2</th>
+</tr>
 </table>
 
 <button onclick="calc()">Calculate Results</button>
 <button onclick="submitData()">Submit Results</button>
 
 <script>
-const items = [
-  "Box of Matches",
-  "Food Concentrate",
-  "50 Feet Nylon Rope",
-  "Parachute Silk",
-  "Portable Heating Unit",
-  "Two .45 Caliber Pistols",
-  "Case of Dehydrated Milk",
-  "Two 100 lb. Oxygen Tanks",
-  "Stellar Map",
-  "Self-Inflating Life Raft",
-  "Magnetic Compass",
-  "5 Gallons of Water",
-  "Signal Flares",
-  "First Aid Kit (including injection needle)",
-  "Solar-Powered FM Receiver-Transmitter"
+
+// 🔹 中文名称（发送给后台，不可改）
+const itemsCN = [
+"火柴盒","浓缩食品","20米尼龙绳","降落伞绸","便携式加热装置",
+"两把.45口径手枪","一箱脱水牛奶","两个50公斤氧气罐","星图",
+"自充气救生筏","磁罗盘","20升水","信号弹","包括注射针的急救箱","太阳能FM收发机"
+];
+
+// 🔹 英文名称（页面显示）
+const itemsEN = [
+"Box of Matches","Food Concentrate","50 Feet Nylon Rope","Parachute Silk",
+"Portable Heating Unit","Two .45 Caliber Pistols","Case of Dehydrated Milk",
+"Two 100 lb. Oxygen Tanks","Stellar Map","Self-Inflating Life Raft",
+"Magnetic Compass","5 Gallons of Water","Signal Flares",
+"First Aid Kit (with injection needle)","Solar-Powered FM Receiver-Transmitter"
 ];
 
 const expert = [15,4,6,8,13,11,12,1,3,9,14,2,10,7,5];
 
 const table = document.getElementById("score-table");
 
-items.forEach((item, i) => {
-  const tr = document.createElement("tr");
-  tr.innerHTML = `
-    <td>${item}</td>
-    <td><input id="p1-${i}" class="rank-input"></td>
-    <td><input id="p2-${i}" class="rank-input"></td>
-    <td><input id="p3-${i}" class="rank-input"></td>
-    <td id="exp-${i}" class="expert hidden-col">${expert[i]}</td>
-    <td id="s5-${i}" class="hidden-col"></td>
-    <td id="s6-${i}" class="hidden-col"></td>
-    <td id="s7-${i}" class="hidden-col"></td>
-    <td id="s8-${i}" class="hidden-col"></td>
-  `;
-  table.appendChild(tr);
+itemsEN.forEach((item, i) => {
+const tr = document.createElement("tr");
+tr.innerHTML = `
+<td>${item}</td>
+<td><input id="p1-${i}" class="rank-input"></td>
+<td><input id="p2-${i}" class="rank-input"></td>
+<td><input id="p3-${i}" class="rank-input"></td>
+<td id="exp-${i}" class="expert hidden-col">${expert[i]}</td>
+<td id="s5-${i}" class="hidden-col"></td>
+<td id="s6-${i}" class="hidden-col"></td>
+<td id="s7-${i}" class="hidden-col"></td>
+<td id="s8-${i}" class="hidden-col"></td>
+`;
+table.appendChild(tr);
 });
 
 const sumRow = document.createElement("tr");
 sumRow.classList.add("hidden-col");
 sumRow.id = "sum-row";
 sumRow.innerHTML = `
-  <td class="note-cell" colspan="5">
-  Total Absolute Differences for Steps 5–8:<br>(Lower score = better performance)
-  </td>
-  <td id="sum5" class="sum-cell"></td>
-  <td id="sum6" class="sum-cell"></td>
-  <td id="sum7" class="sum-cell"></td>
-  <td id="sum8" class="sum-cell"></td>
+<td class="note-cell" colspan="5">
+Total Absolute Differences (Lower = Better)
+</td>
+<td id="sum5" class="sum-cell"></td>
+<td id="sum6" class="sum-cell"></td>
+<td id="sum7" class="sum-cell"></td>
+<td id="sum8" class="sum-cell"></td>
 `;
 table.appendChild(sumRow);
 
-function calc() {
-  let total5 = 0, total6 = 0, total7 = 0, total8 = 0;
+function calc(){
+let total5=0,total6=0,total7=0,total8=0;
 
-  items.forEach((_, i) => {
-    let p1 = Number(document.getElementById(`p1-${i}`).value);
-    let p2 = Number(document.getElementById(`p2-${i}`).value);
-    let p3 = Number(document.getElementById(`p3-${i}`).value);
-    let exp = expert[i];
+itemsCN.forEach((_,i)=>{
+let p1=Number(document.getElementById(`p1-${i}`).value);
+let p2=Number(document.getElementById(`p2-${i}`).value);
+let p3=Number(document.getElementById(`p3-${i}`).value);
+let exp=expert[i];
 
-    let v5 = Math.abs(p1 - p2);
-    let v6 = Math.abs(p1 - exp);
-    let v7 = Math.abs(p2 - exp);
-    let v8 = Math.abs(p3 - exp);
+let v5=Math.abs(p1-p2);
+let v6=Math.abs(p1-exp);
+let v7=Math.abs(p2-exp);
+let v8=Math.abs(p3-exp);
 
-    document.getElementById(`s5-${i}`).innerText = v5;
-    document.getElementById(`s6-${i}`).innerText = v6;
-    document.getElementById(`s7-${i}`).innerText = v7;
-    document.getElementById(`s8-${i}`).innerText = v8;
+document.getElementById(`s5-${i}`).innerText=v5;
+document.getElementById(`s6-${i}`).innerText=v6;
+document.getElementById(`s7-${i}`).innerText=v7;
+document.getElementById(`s8-${i}`).innerText=v8;
 
-    total5 += v5;
-    total6 += v6;
-    total7 += v7;
-    total8 += v8;
-  });
+total5+=v5; total6+=v6; total7+=v7; total8+=v8;
+});
 
-  document.getElementById("sum5").innerText = total5;
-  document.getElementById("sum6").innerText = total6;
-  document.getElementById("sum7").innerText = total7;
-  document.getElementById("sum8").innerText = total8;
+document.getElementById("sum5").innerText=total5;
+document.getElementById("sum6").innerText=total6;
+document.getElementById("sum7").innerText=total7;
+document.getElementById("sum8").innerText=total8;
 
-  document.querySelectorAll(".hidden-col").forEach(el => {
-    el.style.display = "table-cell";
-  });
-
-  document.getElementById("sum-row").style.display = "table-row";
-  document.getElementById("hint").style.display = "none";
+document.querySelectorAll(".hidden-col").forEach(el=>{el.style.display="table-cell";});
+document.getElementById("sum-row").style.display="table-row";
+document.getElementById("hint").style.display="none";
 }
 
-function submitData() {
+function submitData(){
+const group=document.getElementById("group").value.trim();
+const name=document.getElementById("name").value.trim();
 
-  const group = document.getElementById("group").value.trim();
-  const name = document.getElementById("name").value.trim();
+if(!group||!name){
+alert("Please enter your group number and name.");
+return;
+}
 
-  if (!group || !name) {
-    alert("Please enter your group number and name.");
-    return;
-  }
+const rawData=[];
+itemsCN.forEach((item,i)=>{
+rawData.push({
+item:item,   // 🔴 仍然发送中文名称
+step1:document.getElementById(`p1-${i}`).value,
+step2:document.getElementById(`p2-${i}`).value,
+step3:document.getElementById(`p3-${i}`).value
+});
+});
 
-  const rawData = [];
-  items.forEach((item, i) => {
-    rawData.push({
-      item: item,
-      step1: document.getElementById(`p1-${i}`).value,
-      step2: document.getElementById(`p2-${i}`).value,
-      step3: document.getElementById(`p3-${i}`).value
-    });
-  });
+const calculatedData=[];
+itemsCN.forEach((item,i)=>{
+calculatedData.push({
+item:item,
+expert:expert[i],
+step5:document.getElementById(`s5-${i}`).innerText,
+step6:document.getElementById(`s6-${i}`).innerText,
+step7:document.getElementById(`s7-${i}`).innerText,
+step8:document.getElementById(`s8-${i}`).innerText
+});
+});
 
-  const calculatedData = [];
-  items.forEach((item, i) => {
-    calculatedData.push({
-      item: item,
-      expert: expert[i],
-      step5: document.getElementById(`s5-${i}`).innerText,
-      step6: document.getElementById(`s6-${i}`).innerText,
-      step7: document.getElementById(`s7-${i}`).innerText,
-      step8: document.getElementById(`s8-${i}`).innerText
-    });
-  });
+const payload={
+group:group,
+name:name,
+rawData:rawData,
+calculatedData:calculatedData,
+sum5:document.getElementById("sum5").innerText,
+sum6:document.getElementById("sum6").innerText,
+sum7:document.getElementById("sum7").innerText,
+sum8:document.getElementById("sum8").innerText
+};
 
-  const payload = {
-    group: group,
-    name: name,
-    rawData: rawData,
-    calculatedData: calculatedData,
-    sum5: document.getElementById("sum5").innerText,
-    sum6: document.getElementById("sum6").innerText,
-    sum7: document.getElementById("sum7").innerText,
-    sum8: document.getElementById("sum8").innerText
-  };
-
-  fetch("https://script.google.com/macros/s/AKfycbxe8Pc4ERZLtaUDE9V74pyCuduvv80NtVuNOi_eUiGGDteMAifXOi8i0l--LA0DP84rmw/exec", {
-    method: "POST",
-    body: JSON.stringify(payload),
-    mode: "no-cors"
-  })
-  .then(() => {
-    alert("Submission successful! Your instructor has received your results 😊");
-  })
-  .catch(error => {
-    alert("Submission failed. Please check your internet connection.");
-    console.error(error);
-  });
+fetch("https://script.google.com/macros/s/AKfycbxe8Pc4ERZLtaUDE9V74pyCuduvv80NtVuNOi_eUiGGDteMAifXOi8i0l--LA0DP84rmw/exec",{
+method:"POST",
+body:JSON.stringify(payload),
+mode:"no-cors"
+})
+.then(()=>{alert("Submission successful! 😊");})
+.catch(()=>{alert("Submission failed. Please check your internet connection.");});
 }
 </script>
 
